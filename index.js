@@ -38,7 +38,10 @@ Note.init({
   },
   date: {
     type: DataTypes.DATE,
-  }
+  },
+  // creationYear: {
+  //   type: DataTypes.INTEGER,
+  // }
 }, {
   sequelize,
   underscored: true,
@@ -46,12 +49,27 @@ Note.init({
   modelName: 'note'
 })
 
+app.use(express.json())
+
 app.get('/api/notes', async (req, res) => {
     // const notes = await sequelize.query("SELECT * FROM notes", {
     //   type: QueryTypes.SELECT
     // })
     const notes = await Note.findAll()
     res.json(notes)
+})
+
+app.post('/api/notes', async (req, res) => {
+  // console.log(req.body)
+  // const note = await Note.create(req.body)
+  // res.json(note)
+  try {
+    console.log(req.body)
+    const note = await Note.create(req.body)
+    res.json(note)
+  } catch (error) {
+    return res.status(400).json({ error })
+  }
 })
 
 const PORT = process.env.PORT || 3000
