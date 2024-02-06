@@ -49,6 +49,8 @@ Note.init({
   modelName: 'note'
 })
 
+Note.sync()
+
 app.use(express.json())
 
 app.get('/api/notes', async (req, res) => {
