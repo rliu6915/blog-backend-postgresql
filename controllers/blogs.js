@@ -8,7 +8,7 @@ const blogFinder = async (req, res, next) => {
 }
 
 
-app.get('/api/blogs', async (req, res) => {
+router.get('/', async (req, res) => {
   // const notes = await sequelize.query("SELECT * FROM notes", {
   //   type: QueryTypes.SELECT
   // })
@@ -17,7 +17,7 @@ app.get('/api/blogs', async (req, res) => {
   res.json(blogs)
 })
 
-app.post('/api/blogs', async (req, res) => {
+router.post('/', async (req, res) => {
   // console.log(req.body)
   // const note = await Note.create(req.body)
   // res.json(note)
@@ -30,7 +30,17 @@ app.post('/api/blogs', async (req, res) => {
   }
 })
 
-app.delete('/api/blogs/:id', blogFinder, async (req, res) => {
+router.put('/:id', blogFinder, async (req, res) => {
+  if (req.blog) {
+    req.blog.likes = req.body.likes
+    await req.blog.save()
+    res.json(req.blog)
+  } else {
+    res.status(404).end()
+  }
+})
+
+router.delete('/:id', blogFinder, async (req, res) => {
   // const blog = await Blog.findByPk(req.params.id)
   if (req.blog) {
     await req.blog.destroy()
@@ -39,3 +49,5 @@ app.delete('/api/blogs/:id', blogFinder, async (req, res) => {
     res.status(404).end()
   }
 })
+
+module.exports = router
