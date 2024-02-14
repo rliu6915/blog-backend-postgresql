@@ -17,9 +17,9 @@ Note.init({
   important: {
     type: DataTypes.BOOLEAN
   },
-  date: {
-    type: DataTypes.DATE
-  }
+  // date: {
+  //   type: DataTypes.DATE
+  // }
 }, {
   sequelize,
   underscored: true,
