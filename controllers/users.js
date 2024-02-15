@@ -47,6 +47,25 @@ router.post('/', async (req, res) => {
   } 
 })
 
+router.put('/:username', async (req, res) => {
+  const { username } = req.params
+
+  const user = await User.findOne({
+    where: {
+      username
+    }
+  })
+
+  if (!user) {
+    return res.status(404).end()
+  }
+
+  await user.update({
+    username: req.body.username
+  })
+  res.status(204).end()
+})
+
 router.delete('/:id', async (req, res) => {
   const user = await User.findByPk(req.params.id)
   if (!user) {
