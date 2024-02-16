@@ -3,6 +3,16 @@ const bcrypt = require('bcrypt')
 
 const { User, Note, Blog } = require('../models')
 
+const errorHandler = (error, req, res, next) => {
+  console.log("error.name: ", error.name)
+  if (error.name === "SequelizeValidationError") {
+    return res.status(400).json({
+      error: "Validation isEmail on username failed"
+    })
+  }
+  next(error)
+}
+
 router.get('/', async (req, res) => {
   // const users = await User.findAll()
   // const users = await User.findAll({
@@ -48,17 +58,24 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
   console.log(req.body)
   const { username, name, password } = req.body
-  try {
-    const passwordHash = await bcrypt.hash(password, 10)
-    const user = await User.create({
-      username,
-      name,
-      passwordHash
-    })
-    res.json(user)
-  } catch (error) {
-    res.status(400).json(error)
-  } 
+  // try {
+  //   const passwordHash = await bcrypt.hash(password, 10)
+  //   const user = await User.create({
+  //     username,
+  //     name,
+  //     passwordHash
+  //   })
+  //   res.json(user)
+  // } catch (error) {
+  //   res.status(400).json(error)
+  // } 
+  const passwordHash = await bcrypt.hash(password, 10)
+  const user = await User.create({
+    username,
+    name,
+    passwordHash
+  })
+  res.json(user)
 })
 
 router.put('/:username', async (req, res) => {
@@ -88,5 +105,7 @@ router.delete('/:id', async (req, res) => {
   await user.destroy()
   res.status(204).end()
 })
+
+router.use(errorHandler)
 
 module.exports = router
