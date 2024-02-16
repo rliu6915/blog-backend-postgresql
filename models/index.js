@@ -6,9 +6,15 @@ const User = require('./user')
 // Blog.sync()
 // User.sync()
 
-User.hasMany(Note)
+User.hasMany(Note, {
+  onDelete: 'cascade',
+  onUpdate: 'cascade'
+})
 Note.belongsTo(User)
-User.hasMany(Blog)
+User.hasMany(Blog, {
+  onDelete: 'cascade',
+  onUpdate: 'cascade'
+})
 Blog.belongsTo(User)
 Note.sync({
   alter: true
