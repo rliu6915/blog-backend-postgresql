@@ -57,7 +57,8 @@ router.post('/', tokenExtractor, async (req, res) => {
   //   // return res.status(400).json({ error })
   //   next(error)
   // }
-  console.log("decodedToken: ", req.decodedToken)
+
+  // console.log("decodedToken: ", req.decodedToken)
   const user = await User.findByPk(req.decodedToken.id)
   const blog = await Blog.create({
     ...req.body,
@@ -94,8 +95,9 @@ router.put('/:id', blogFinder, async (req, res) => {
   }
 })
 
-router.delete('/:id', blogFinder, async (req, res) => {
+router.delete('/:id', blogFinder, tokenExtractor, async (req, res) => {
   // const blog = await Blog.findByPk(req.params.id)
+  console.log("decodedToken: ", req.decodedToken)
   if (req.blog) {
     await req.blog.destroy()
     res.status(200).end()
