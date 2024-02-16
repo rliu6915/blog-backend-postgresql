@@ -24,7 +24,6 @@ router.get('/', async (req, res) => {
 })
 
 const tokenExtractor = (req, res, next) => {
-  console.log('Token extractor', req)
   const auhtor = req.get('authorization')
   if (auhtor && auhtor.toLowerCase().startsWith('bearer ')) {
     // req.decodedToken = jwt.verify(auhtor, SECRET)
