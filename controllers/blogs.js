@@ -24,7 +24,15 @@ router.get('/', async (req, res) => {
   // const notes = await sequelize.query("SELECT * FROM notes", {
   //   type: QueryTypes.SELECT
   // })
-  const blogs = await Blog.findAll()
+  const blogs = await Blog.findAll({
+    attributes: {
+      exclude: ["userId"]
+    },
+    include: {
+      model: User,
+      attributes: ["username", "name"]
+    }
+  })
   console.log(JSON.stringify(blogs))
   res.json(blogs)
 })
