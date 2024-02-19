@@ -28,10 +28,26 @@ router.get('/', async (req, res) => {
   const where = {}
   console.log('req.query', req.query.search)
   if (req.query.search) {
-    where.title = {
-      // [Op.substring]: req.query.search
-      [Op.iLike]: `%${req.query.search}%`
-    }
+    where[Op.or] = [
+      {
+        title: {
+          [Op.iLike]: `%${req.query.search}%`
+        }
+      },
+      {
+        author: {
+          [Op.iLike]: `%${req.query.search}%`
+        }
+      }
+    ]
+    // where.title = {
+    //   // [Op.substring]: req.query.search
+    //   [Op.iLike]: `%${req.query.search}%`
+    // },
+    // where.author = {
+    //   // [Op.substring]: req.query.search
+    //   [Op.iLike]: `%${req.query.search}%`
+    // }
   }
   const blogs = await Blog.findAll({
     attributes: {
