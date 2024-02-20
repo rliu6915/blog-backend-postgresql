@@ -62,7 +62,7 @@ router.get('/', async (req, res) => {
       ['likes', 'DESC']
     ]
   })
-  console.log(JSON.stringify(blogs))
+  // console.log(JSON.stringify(blogs))
   res.json(blogs)
 })
 
