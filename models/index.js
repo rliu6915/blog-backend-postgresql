@@ -16,15 +16,16 @@ User.hasMany(Blog, {
   onUpdate: 'cascade'
 })
 Blog.belongsTo(User)
-Note.sync({
-  alter: true
-})
-Blog.sync({
-  alter: true
-})
-User.sync({
-  alter: true
-})
+
+// Note.sync({
+//   alter: true
+// })
+// Blog.sync({
+//   alter: true
+// })
+// User.sync({
+//   alter: true
+// })
 
 
 module.exports = {

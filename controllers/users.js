@@ -4,10 +4,14 @@ const bcrypt = require('bcrypt')
 const { User, Note, Blog } = require('../models')
 
 const errorHandler = (error, req, res, next) => {
-  console.log("error.name: ", error.name)
+  // console.log("error.name: ", error.name)
   if (error.name === "SequelizeValidationError") {
     return res.status(400).json({
-      error: "Validation isEmail on username failed"
+      error: error.message
+    })
+  } else if (error.name == "SequelizeDatabaseError") {
+    return res.status(400).json({
+      error: error.message
     })
   }
   next(error)
@@ -70,6 +74,7 @@ router.post('/', async (req, res) => {
   //   res.status(400).json(error)
   // } 
   const passwordHash = await bcrypt.hash(password, 10)
+  // console.log("passwordHash: ", passwordHash)
   const user = await User.create({
     username,
     name,
