@@ -4,6 +4,7 @@ const { Op } = require("sequelize");
 
 const { Note, User } = require('../models')
 const { SECRET } = require('../util/config')
+const { tokenExtractor } = require("../util/middleware")
 
 const noteFinder = async (req, res, next) => {
   req.note = await Note.findByPk(req.params.id)
@@ -50,20 +51,20 @@ router.get('/', async (req, res) => {
   res.json(notes)
 })
 
-const tokenExtractor = (req, res, next) => {
-  const auhtor = req.get('authorization')
-  if (auhtor && auhtor.toLowerCase().startsWith('bearer ')) {
-    // req.decodedToken = jwt.verify(auhtor, SECRET)
-    try {
-      req.decodedToken = jwt.verify(auhtor.substring(7), SECRET)
-    } catch (error) {
-      return res.status(401).json({ error: 'token invalid'})
-    }
-  } else {
-    return res.status(401).json({ error: 'token missing'})
-  }
-  next()
-}
+// const tokenExtractor = (req, res, next) => {
+//   const auhtor = req.get('authorization')
+//   if (auhtor && auhtor.toLowerCase().startsWith('bearer ')) {
+//     // req.decodedToken = jwt.verify(auhtor, SECRET)
+//     try {
+//       req.decodedToken = jwt.verify(auhtor.substring(7), SECRET)
+//     } catch (error) {
+//       return res.status(401).json({ error: 'token invalid'})
+//     }
+//   } else {
+//     return res.status(401).json({ error: 'token missing'})
+//   }
+//   next()
+// }
 
 router.post('/', tokenExtractor, async (req, res) => {
   try {

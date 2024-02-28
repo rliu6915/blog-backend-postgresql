@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken")
 
 const { User, Note, Blog } = require('../models')
 const { SECRET } = require('../util/config')
+const { tokenExtractor } = require("../util/middleware")
 
 const errorHandler = (error, req, res, next) => {
   // console.log("error.name: ", error.name)
@@ -85,21 +86,29 @@ router.post('/', async (req, res) => {
   res.json(user)
 })
 
-const tokenExtractor = (req, res, next) => {
-  const auhtor = req.get('authorization')
-  if (auhtor && auhtor.toLowerCase().startsWith("bearer ")) {
-    try {
-      req.decodedToken = jwt.verify(auhtor.substring(7), SECRET)
-    } catch (error) {
-      return res.status(401).json({ error: "token invalid"})
-    }
-  } else {
-    return res.status(401).json({ error: "token missing"})
+// const tokenExtractor = (req, res, next) => {
+//   const auhtor = req.get('authorization')
+//   if (auhtor && auhtor.toLowerCase().startsWith("bearer ")) {
+//     try {
+//       req.decodedToken = jwt.verify(auhtor.substring(7), SECRET)
+//     } catch (error) {
+//       return res.status(401).json({ error: "token invalid"})
+//     }
+//   } else {
+//     return res.status(401).json({ error: "token missing"})
+//   }
+//   next()
+// }
+
+const isAdmin = async (req, res, next) => {
+  const user = await User.findByPk(req.decodedToken.id)
+  if (!user.admin) {
+    return res.status(401).json({ error: "user is not admin "})
   }
   next()
 }
 
-router.put('/:username', tokenExtractor, async (req, res) => {
+router.put('/:username', tokenExtractor, isAdmin, async (req, res) => {
   const { username } = req.params
 
   const user = await User.findOne({
@@ -113,7 +122,8 @@ router.put('/:username', tokenExtractor, async (req, res) => {
   }
 
   await user.update({
-    username: req.body.username
+    username: req.body.username,
+    disabled: req.body.disabled
   })
   res.status(204).end()
 })
