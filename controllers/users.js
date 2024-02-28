@@ -1,7 +1,9 @@
 const router = require('express').Router()
 const bcrypt = require('bcrypt')
+const jwt = require("jsonwebtoken")
 
 const { User, Note, Blog } = require('../models')
+const { SECRET } = require('../util/config')
 
 const errorHandler = (error, req, res, next) => {
   // console.log("error.name: ", error.name)
@@ -83,7 +85,21 @@ router.post('/', async (req, res) => {
   res.json(user)
 })
 
-router.put('/:username', async (req, res) => {
+const tokenExtractor = (req, res, next) => {
+  const auhtor = req.get('authorization')
+  if (auhtor && auhtor.toLowerCase().startsWith("bearer ")) {
+    try {
+      req.decodedToken = jwt.verify(auhtor.substring(7), SECRET)
+    } catch (error) {
+      return res.status(401).json({ error: "token invalid"})
+    }
+  } else {
+    return res.status(401).json({ error: "token missing"})
+  }
+  next()
+}
+
+router.put('/:username', tokenExtractor, async (req, res) => {
   const { username } = req.params
 
   const user = await User.findOne({
