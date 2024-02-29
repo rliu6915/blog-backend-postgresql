@@ -4,7 +4,8 @@
   "description": "A simple express app with sequelize",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "migration:down": "node util/rollback.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
