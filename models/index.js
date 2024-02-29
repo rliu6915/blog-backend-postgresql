@@ -2,6 +2,9 @@ const Note = require('./note')
 const Blog = require('./blog')
 const User = require('./user')
 
+const Team = require('./team')
+const Membership = require('./membership')
+
 // Note.sync()
 // Blog.sync()
 // User.sync()
@@ -16,6 +19,9 @@ User.hasMany(Blog, {
   onUpdate: 'cascade'
 })
 Blog.belongsTo(User)
+
+User.belongsToMany(Team, { through: Membership })
+Team.belongsToMany(User, { through: Membership })
 
 // Note.sync({
 //   alter: true
@@ -32,4 +38,6 @@ module.exports = {
   Note,
   Blog,
   User,
+  Team,
+  Membership
 }
