@@ -60,10 +60,28 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/:id', async (req, res) => {
-  console.log(req)
-  const user = await User.findByPk(req.params.id)
+  // console.log(req)
+  // const user = await User.findByPk(req.params.id)
+  const user = await User.findByPk(req.params.id, {
+    include: {
+      model: Note
+    }
+  })
+
+  // user.notes.forEach(note => {
+  //   console.log(note.content)
+  // })
+
   if (user) {
-    res.json(user)
+    // user.note_count = user.notes.length
+    // delete user.notes
+    // console.log(user)
+    // res.json(user)
+    res.json({
+      username: user.username,
+      name: user.name,
+      note_count: user.notes.length
+    })
   } else {
     res.status(404).end()
   }
