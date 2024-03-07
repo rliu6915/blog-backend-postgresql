@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
     order: [
       ["likes", "DESC"]
     ]
-})
+  })
   console.log('The get method in authors: ', JSON.stringify(author))
   res.json(author)
 })
