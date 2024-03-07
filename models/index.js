@@ -6,6 +6,8 @@ const Team = require('./team')
 const Membership = require('./membership')
 const UserNotes = require('./user_note')
 
+const List = require('./list')
+
 // Note.sync()
 // Blog.sync()
 // User.sync()
@@ -33,6 +35,15 @@ Note.belongsToMany(User, {
   as: "marked_users"
 })
 
+User.belongsToMany(Blog, {
+  through: List,
+  as: "read_blogs"
+})
+Blog.belongsToMany(User, {
+  through: List,
+  as: "read_users"
+})
+
 
 
 // Note.sync({
@@ -52,5 +63,6 @@ module.exports = {
   User,
   Team,
   Membership,
-  UserNotes
+  UserNotes,
+  List
 }
