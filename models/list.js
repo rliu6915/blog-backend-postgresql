@@ -30,7 +30,7 @@ List.init({
   underscored: true,
   // timestamps: true,
   timestamps: false,
-  modelName: 'list'
+  modelName: 'lists',
 })
 
 module.exports = List
