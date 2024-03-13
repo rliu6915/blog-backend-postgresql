@@ -37,7 +37,7 @@ Note.belongsToMany(User, {
 
 User.belongsToMany(Blog, {
   through: List,
-  as: "read_blogs"
+  as: "readings"
 })
 Blog.belongsToMany(User, {
   through: List,
