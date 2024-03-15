@@ -14,6 +14,7 @@ router.post('/', async (req, res) => {
       username: username,
     }
   })
+  console.log('user', user)
 
   // const ifPasswordCorrect = password === "secret"
   const ifPasswordCorrect = user === null 

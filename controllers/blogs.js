@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken')
 const { SECRET } = require('../util/config')
 const { Op } = require('sequelize')
 
+const { tokenExtractor } = require('../util/middleware')
+
 
 const blogFinder = async (req, res, next) => {
   req.blog = await Blog.findByPk(req.params.id)
@@ -66,21 +68,21 @@ router.get('/', async (req, res) => {
   res.json(blogs)
 })
 
-const tokenExtractor = (req, res, next) => {
-  // console.log('Token extractor', req)
-  const auhtor = req.get('authorization')
-  if (auhtor && auhtor.toLowerCase().startsWith('bearer ')) {
-    // req.decodedToken = jwt.verify(auhtor, SECRET)
-    try {
-      req.decodedToken = jwt.verify(auhtor.substring(7), SECRET)
-    } catch (error) {
-      return res.status(401).json({ error: 'token invalid'})
-    }
-  } else {
-    return res.status(401).json({ error: 'token missing'})
-  }
-  next()
-}
+// const tokenExtractor = (req, res, next) => {
+//   // console.log('Token extractor', req)
+//   const auhtor = req.get('authorization')
+//   if (auhtor && auhtor.toLowerCase().startsWith('bearer ')) {
+//     // req.decodedToken = jwt.verify(auhtor, SECRET)
+//     try {
+//       req.decodedToken = jwt.verify(auhtor.substring(7), SECRET)
+//     } catch (error) {
+//       return res.status(401).json({ error: 'token invalid'})
+//     }
+//   } else {
+//     return res.status(401).json({ error: 'token missing'})
+//   }
+//   next()
+// }
 
 router.post('/', tokenExtractor, async (req, res) => {
   // console.log(req.body)
