@@ -41,7 +41,7 @@ User.belongsToMany(Blog, {
 })
 Blog.belongsToMany(User, {
   through: List,
-  as: "read_users"
+  as: "reading_lists"
 })
 
 
