@@ -67,6 +67,17 @@ router.get('/:id', async (req, res) => {
   //     model: Note
   //   }
   // })
+
+  // let read = {
+  //   [Op.in]: [true, false]
+  // }
+  // if ( req.query.read ) {
+  //   read = req.query.read === "true"
+  // }
+  const where = {}
+  if (req.query.read) {
+    where.readState = req.query.read === "true"
+  }
   const user = await User.findByPk(req.params.id, {
     attributes: {
       exclude: [''],
@@ -107,10 +118,11 @@ router.get('/:id', async (req, res) => {
         },
         through: {
           as: "reading_lists",
-          attributes: ['id', "readState"]
+          attributes: ['id', "readState"],
+          where
         },
       }
-    ]
+    ],
   })
 
   // user.notes.forEach(note => {
