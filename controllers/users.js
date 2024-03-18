@@ -103,13 +103,13 @@ router.get('/:id', async (req, res) => {
           attributes: ['name']
         }
       },
-      {
-        model: Team,
-        attributes: ['name', 'id'],
-        through: {
-          attributes: []
-        }
-      }, 
+      // {
+      //   model: Team,
+      //   attributes: ['name', 'id'],
+      //   through: {
+      //     attributes: []
+      //   }
+      // }, 
       {
         model: Blog,
         as : "readings",
@@ -133,12 +133,24 @@ router.get('/:id', async (req, res) => {
     // user.note_count = user.notes.length
     // delete user.notes
     // console.log(user)
-    res.json(user)
+    // res.json(user)
     // res.json({
     //   username: user.username,
     //   name: user.name,
     //   note_count: user.notes.length
     // })
+
+    let teams = undefined
+    if (req.query.teams) {
+      teams = await user.getTeams({
+        attributes: ['name'],
+        joinTableAttributes: []
+      })
+    }
+    res.json({
+      ...user.toJSON(),
+      teams
+    })
   } else {
     res.status(404).end()
   }
