@@ -27,6 +27,17 @@ router.get('/', async (req, res) => {
   //     model: Note,
   //   }
   // })
+
+  // const jami = await User.findOne({ where: { name: 'test n' } })
+  // console.log("jami: ", jami)
+  // const cnt = await jami.number_of_notes()
+  // console.log(`Jami has created ${cnt} notes`)
+  // const userss = await User.with_notes(1)
+  // console.log(JSON.stringify(userss, null, 2))
+  // userss.forEach(u => {
+  //   console.log(u.name)
+  // })
+
   const users = await User.findAll({
     // include: {
     //   model: Note,
