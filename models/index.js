@@ -7,6 +7,7 @@ const Membership = require('./membership')
 const UserNotes = require('./user_note')
 
 const List = require('./list')
+const Session = require('./session')
 
 // Note.sync()
 // Blog.sync()
@@ -64,5 +65,6 @@ module.exports = {
   Team,
   Membership,
   UserNotes,
-  List
+  List,
+  Session
 }
