@@ -15,4 +15,9 @@ const tokenExtractor = (req, res, next) => {
   next()
 }
 
+const validSession = (req, res, next) => {
+  
+  next()
+}
+
 module.exports = { tokenExtractor }
