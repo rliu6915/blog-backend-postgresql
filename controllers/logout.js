@@ -21,7 +21,7 @@ router.delete('/', userFind, tokenExtractor, async (req, res) => {
       }
     })
     res.status(204).json({
-      message: "logged out"
+      message: "logged out and session deleted"
     })
   } else {
     res.status(404).end()
