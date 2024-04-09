@@ -22,14 +22,10 @@ Session.init({
     type: DataTypes.STRING,
     allowNull: false,
   },
-  expired_at: {
-    type: DataTypes.DATE,
-    allowNull: false,
-  }
 }, {
   sequelize,
   underscored: true,
-  timestamps: false,
+  timestamps: true,
   modelName: 'session'
 })
 
