@@ -45,6 +45,8 @@ Blog.belongsToMany(User, {
   as: "reading_lists"
 })
 
+User.hasMany(Session)
+Session.belongsTo(User)
 
 
 // Note.sync({
